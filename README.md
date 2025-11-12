@@ -1,7 +1,34 @@
-# fullstack-admin
+# 🚀 Dashboard Admin - William Smolarek
 
-Build a MERN React Admin Dashboard | Redux Toolkit Query, Backend Focus, Deployment, Data Modeling
+Dashboard administrativo completo com React, TypeScript e Material-UI.
 
-Video: https://www.youtube.com/watch?v=0cPCMIuDk2I
+## ✨ Funcionalidades Implementadas
 
-For all related questions and discussions about this project, check out the discord: https://discord.gg/2FfPeEk2mX
+- ✅ **Sistema de autenticação** (login/logout)
+- ✅ **Interface responsiva** com Material-UI
+- ✅ **Gráficos e visualizações** 
+- ✅ **Gerenciamento de dados** (produtos, clientes, transações)
+- ✅ **Tema claro/escuro**
+- ✅ **TypeScript** para maior segurança
+
+## 🛠️ Stack Tecnológica
+
+- **Frontend:** React 18 + TypeScript
+- **UI Framework:** Material-UI (MUI)
+- **Estado:** Redux Toolkit
+- **Roteamento:** React Router DOM
+- **Backend:** Node.js + Express
+- **Banco de Dados:** MongoDB
+
+## 🚀 Como Executar
+
+```bash
+# Backend
+cd server
+npm install
+npm start
+
+# Frontend (terminal separado)
+cd client
+npm install  
+npm start
