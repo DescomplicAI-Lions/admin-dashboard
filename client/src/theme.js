@@ -16,29 +16,29 @@ export const tokensDark = {
     1000: "#000000", // manually adjusted
   },
   primary: {
-    // blue
-    100: "#d3d4de",
-    200: "#a6a9be",
-    300: "#7a7f9d",
-    400: "#4d547d",
-    500: "#21295c",
-    600: "#191F45", // manually adjusted
-    700: "#141937",
-    800: "#0d1025",
-    900: "#070812",
+    // purple aesthetic - tons escuros e elegantes
+    100: "#e1d6f5",
+    200: "#c3adeb",
+    300: "#a585e2",
+    400: "#875cd8",
+    500: "#6933ce", // Roxo principal - aesthetic
+    600: "#5429a5",
+    700: "#3f1f7c",
+    800: "#2a1452",
+    900: "#150a29",
   },
   secondary: {
-    // yellow
-    50: "#f0f0f0", // manually adjusted
-    100: "#fff6e0",
-    200: "#ffedc2",
-    300: "#ffe3a3",
-    400: "#ffda85",
-    500: "#ffd166",
-    600: "#cca752",
-    700: "#997d3d",
-    800: "#665429",
-    900: "#332a14",
+    // lilás/lavanda - tons mais suaves
+    50: "#f5f0ff", // manually adjusted
+    100: "#e8e0ff",
+    200: "#d1c1ff",
+    300: "#baa2ff",
+    400: "#a383ff",
+    500: "#8c64ff", // Lilás principal
+    600: "#7050cc",
+    700: "#543c99",
+    800: "#382866",
+    900: "#1c1433",
   },
 };
 
@@ -66,23 +66,23 @@ export const themeSettings = (mode) => {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
+            // palette values for dark mode - TEMA ROXO AESTHETIC
             primary: {
               ...tokensDark.primary,
-              main: tokensDark.primary[400],
-              light: tokensDark.primary[400],
+              main: tokensDark.primary[500], // Roxo principal #6933ce
+              light: tokensDark.primary[400], // Roxo mais claro
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[300],
+              main: tokensDark.secondary[500], // Lilás #8c64ff
             },
             neutral: {
               ...tokensDark.grey,
               main: tokensDark.grey[500],
             },
             background: {
-              default: tokensDark.primary[600],
-              alt: tokensDark.primary[500],
+              default: tokensDark.primary[800], // Roxo escuro #2a1452
+              alt: tokensDark.primary[700],     // Roxo médio-escuro #3f1f7c
             },
           }
         : {
