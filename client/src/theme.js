@@ -1,45 +1,57 @@
 // color design tokens export
 export const tokensDark = {
   grey: {
-    0: "#ffffff", // manually adjusted
-    10: "#f6f6f6", // manually adjusted
-    50: "#f0f0f0", // manually adjusted
-    100: "#e0e0e0",
-    200: "#c2c2c2",
-    300: "#a3a3a3",
-    400: "#858585",
-    500: "#666666",
-    600: "#525252",
-    700: "#3d3d3d",
-    800: "#292929",
-    900: "#141414",
+    0: "#ffffff", // manually adjusted - TEXTO CLARO
+    10: "#f8fafc", // manually adjusted
+    50: "#f1f5f9", // manually adjusted
+    100: "#e2e8f0",
+    200: "#cbd5e1",
+    300: "#94a3b8",
+    400: "#64748b",
+    500: "#475569",
+    600: "#334155",
+    700: "#1e293b",
+    800: "#0f172a",
+    900: "#020617",
     1000: "#000000", // manually adjusted
   },
   primary: {
-    // purple aesthetic - tons escuros e elegantes
-    100: "#e1d6f5",
-    200: "#c3adeb",
-    300: "#a585e2",
-    400: "#875cd8",
-    500: "#6933ce", // Roxo principal - aesthetic
-    600: "#5429a5",
-    700: "#3f1f7c",
-    800: "#2a1452",
-    900: "#150a29",
+    // Roxo rico, escuro e sofisticado
+    100: "#2d1b69",
+    200: "#3d248c",
+    300: "#4d2caf",
+    400: "#5d35d2",
+    500: "#6d3df5", // Roxo principal - rico e vibrante
+    600: "#7c4df8",
+    700: "#8b5dfa",
+    800: "#9a6dfb",
+    900: "#a97dfc",
   },
   secondary: {
-    // lilás/lavanda - tons mais suaves
-    50: "#f5f0ff", // manually adjusted
-    100: "#e8e0ff",
-    200: "#d1c1ff",
-    300: "#baa2ff",
-    400: "#a383ff",
-    500: "#8c64ff", // Lilás principal
-    600: "#7050cc",
-    700: "#543c99",
-    800: "#382866",
-    900: "#1c1433",
+    // Tons de roxo mais suaves para contraste
+    50: "#1a1033",
+    100: "#2a1a4d",
+    200: "#3a2466",
+    300: "#4a2e80",
+    400: "#5a3899",
+    500: "#6a42b3", // Roxo secundário
+    600: "#7a52c0",
+    700: "#8a62cd",
+    800: "#9a72da",
+    900: "#aa82e7",
   },
+  accent: {
+    // Tons de roxo claro para detalhes
+    100: "#8b5cf6",
+    200: "#9d6ef8",
+    300: "#af80fa",
+    400: "#c192fb",
+    500: "#d3a4fd", // Destaque
+    600: "#e5b6fe",
+    700: "#f7c8ff",
+    800: "#ffdafe",
+    900: "#ffecff",
+  }
 };
 
 // function that reverses the color palette
@@ -66,45 +78,60 @@ export const themeSettings = (mode) => {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode - TEMA ROXO AESTHETIC
+            // TEMA ESCURO: PRETO PROFUNDO COM ROXO VIBRANTE
             primary: {
               ...tokensDark.primary,
-              main: tokensDark.primary[500], // Roxo principal #6933ce
-              light: tokensDark.primary[400], // Roxo mais claro
+              main: tokensDark.primary[500], // Roxo rico #6d3df5
+              light: tokensDark.primary[600], // Roxo mais claro
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[500], // Lilás #8c64ff
+              main: tokensDark.secondary[500], // Roxo secundário #6a42b3
+            },
+            accent: {
+              ...tokensDark.accent,
+              main: tokensDark.accent[500], // Destaque #d3a4fd
             },
             neutral: {
               ...tokensDark.grey,
-              main: tokensDark.grey[500],
+              main: tokensDark.grey[0], // ✅ TEXTO BRANCO PURO
             },
             background: {
-              default: tokensDark.primary[800], // Roxo escuro #2a1452
-              alt: tokensDark.primary[700],     // Roxo médio-escuro #3f1f7c
+              default: tokensDark.grey[1000], // PRETO ABSOLUTO #000000
+              alt: tokensDark.grey[900],      // Preto profundo #020617
             },
+            text: {
+              primary: tokensDark.grey[0],    // ✅ TEXTO BRANCO PURO
+              secondary: tokensDark.grey[100], // ✅ Texto cinza claro
+            }
           }
         : {
-            // palette values for light mode
+            // TEMA CLARO: ROXO ESCURO E SOFISTICADO
             primary: {
-              ...tokensLight.primary,
-              main: tokensDark.grey[50],
-              light: tokensDark.grey[100],
+              ...tokensDark.primary,
+              main: tokensDark.primary[500], // Roxo principal #6d3df5
+              light: tokensDark.primary[400], // Roxo médio
             },
             secondary: {
-              ...tokensLight.secondary,
-              main: tokensDark.secondary[600],
-              light: tokensDark.secondary[700],
+              ...tokensDark.secondary,
+              main: tokensDark.secondary[400], // Roxo secundário #5a3899
+            },
+            accent: {
+              ...tokensDark.accent,
+              main: tokensDark.accent[300], // Destaque suave #af80fa
             },
             neutral: {
-              ...tokensLight.grey,
-              main: tokensDark.grey[500],
+              ...tokensDark.grey,
+              main: tokensDark.grey[0],     // ✅ TEXTO BRANCO PURO
             },
             background: {
-              default: tokensDark.grey[0],
-              alt: tokensDark.grey[50],
+              default: tokensDark.primary[100], // Fundo roxo escuro #2d1b69
+              alt: tokensDark.primary[200],     // Roxo médio-escuro #3d248c
             },
+            text: {
+              primary: tokensDark.grey[0],    // ✅ TEXTO BRANCO PURO
+              secondary: tokensDark.grey[100], // ✅ Texto cinza claro
+            }
           }),
     },
     typography: {
@@ -113,26 +140,93 @@ export const themeSettings = (mode) => {
       h1: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 40,
+        fontWeight: 700,
       },
       h2: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 32,
+        fontWeight: 600,
       },
       h3: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 24,
+        fontWeight: 600,
       },
       h4: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 20,
+        fontWeight: 500,
       },
       h5: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 16,
+        fontWeight: 500,
       },
       h6: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 14,
+      },
+      body1: {
+        fontSize: 14,
+        fontWeight: 400,
+      },
+      body2: {
+        fontSize: 12,
+        fontWeight: 400,
+      },
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontWeight: 600,
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            backgroundColor: mode === 'dark' ? tokensDark.grey[900] : tokensDark.primary[200],
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? tokensDark.grey[900] : tokensDark.primary[200],
+          },
+        },
+      },
+      MuiTypography: {
+        styleOverrides: {
+          root: {
+            color: 'inherit',
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            borderBottom: `1px solid ${mode === 'dark' ? tokensDark.grey[800] : tokensDark.primary[300]}`,
+            color: tokensDark.grey[0], // ✅ Texto branco nas tabelas
+          },
+          head: {
+            fontWeight: 600,
+            backgroundColor: mode === 'dark' ? tokensDark.primary[800] : tokensDark.primary[300],
+            color: tokensDark.grey[0], // ✅ Texto branco no cabeçalho
+          },
+        },
+      },
+      MuiTablePagination: {
+        styleOverrides: {
+          root: {
+            color: tokensDark.grey[0], // ✅ Texto branco na paginação
+          },
+        },
       },
     },
   };
