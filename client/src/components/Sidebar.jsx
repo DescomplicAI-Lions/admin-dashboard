@@ -123,21 +123,28 @@ const Sidebar = ({
             },
           }}
         >
-          <Box width="100%">
-            <Box m="1.5rem 2rem 2rem 3rem">
-              <FlexBetween color={theme.palette.secondary.main}>
-                <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography variant="h4" fontWeight="bold">
-                    DESCOMPLICAI
-                  </Typography>
-                </Box>
-                {!isNonMobile && (
-                  <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                    <ChevronLeft />
-                  </IconButton>
-                )}
-              </FlexBetween>
-            </Box>
+<Box width="100%">
+  <Box m="1.5rem 2rem 2rem 3rem">
+    <FlexBetween color={theme.palette.secondary.main}>
+      <Box display="flex" alignItems="center" gap="0.5rem" width="100%" justifyContent="center">
+        {/* Logo - CENTRALIZADA */}
+        <Box
+          component="img"
+          alt="logo"
+          src="/assets/logo.png"
+          height="40px"
+          sx={{ 
+            objectFit: "contain"
+          }}
+        />
+      </Box>
+      {!isNonMobile && (
+        <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <ChevronLeft />
+        </IconButton>
+      )}
+    </FlexBetween>
+  </Box>
             <List>
               {navItems.map(({ text, icon, link }) => {
                 if (!icon) {
