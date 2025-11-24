@@ -2,8 +2,8 @@
 export const tokensDark = {
   grey: {
     0: "#ffffff", // manually adjusted - TEXTO CLARO
-    10: "#f8fafc", // manually adjusted
-    50: "#f1f5f9", // manually adjusted
+    10: "#ffffffff", // manually adjusted
+    50: "#ffffffff", // manually adjusted
     100: "#e2e8f0",
     200: "#cbd5e1",
     300: "#94a3b8",
@@ -18,7 +18,7 @@ export const tokensDark = {
   primary: {
     // Roxo rico, escuro e sofisticado
     100: "#2d1b69",
-    200: "#3d248c",
+    200: "#8c67ff",
     300: "#4d2caf",
     400: "#5d35d2",
     500: "#6d3df5", // Roxo principal - rico e vibrante
@@ -30,9 +30,9 @@ export const tokensDark = {
   secondary: {
     // Tons de roxo mais suaves para contraste
     50: "#1a1033",
-    100: "#2a1a4d",
+    100: "#e5d9ffff",
     200: "#3a2466",
-    300: "#4a2e80",
+    300: "#c0a0ff",
     400: "#5a3899",
     500: "#6a42b3", // Roxo secundário
     600: "#7a52c0",
@@ -102,7 +102,7 @@ export const themeSettings = (mode) => {
             },
             text: {
               primary: tokensDark.grey[0],    // ✅ TEXTO BRANCO PURO
-              secondary: tokensDark.grey[100], // ✅ Texto cinza claro
+              secondary: tokensDark.grey[20], // ✅ Texto cinza claro
             }
           }
         : {
@@ -114,7 +114,7 @@ export const themeSettings = (mode) => {
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[400], // Roxo secundário #5a3899
+              main: tokensDark.secondary[400], // Roxo secundário #ffffff
             },
             accent: {
               ...tokensDark.accent,
@@ -126,11 +126,11 @@ export const themeSettings = (mode) => {
             },
             background: {
               default: tokensDark.primary[100], // Fundo roxo escuro #2d1b69
-              alt: tokensDark.primary[200],     // Roxo médio-escuro #3d248c
+              alt: tokensDark.primary[200],     // Roxo médio-escuro #8c67ff
             },
             text: {
               primary: tokensDark.grey[0],    // ✅ TEXTO BRANCO PURO
-              secondary: tokensDark.grey[100], // ✅ Texto cinza claro
+              secondary: tokensDark.grey[20], // ✅ Texto cinza claro
             }
           }),
     },

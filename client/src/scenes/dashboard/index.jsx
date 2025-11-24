@@ -63,18 +63,23 @@ const Dashboard = () => {
         <Header title="PAINEL" subtitle="Bem-vindo ao seu painel administrativo" />
 
         <Box>
-          <Button
+         <Button
             sx={{
-              backgroundColor: theme.palette.secondary.light,
-              color: theme.palette.background.alt,
+              backgroundColor: "#ffffff", // Branco fixo
+              color: "#8c67ff", // Roxo específico
               fontSize: "14px",
-              fontWeight: "bold",
+              fontWeight: 700,
               padding: "10px 20px",
+              borderRadius: "8px",
+              textTransform: "none",
+              '&:hover': {
+                backgroundColor: "#f5f5f5", // Cinza claro no hover
+              }
             }}
           >
-            <DownloadOutlined sx={{ mr: "10px" }} />
-            Baixar Relatórios
-          </Button>
+  <DownloadOutlined sx={{ mr: "10px" }} />
+  Baixar Relatórios
+</Button>
         </Box>
       </FlexBetween>
 
