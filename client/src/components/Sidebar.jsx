@@ -26,7 +26,7 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
-  LockOutlined, // ✅ Ícone de cadeado adicionado
+  LockOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -37,67 +37,67 @@ const navItems = [
     text: "Dashboard",
     icon: <HomeOutlined />,
     link: "/dashboard",
-    available: true // ✅ Disponível
+    available: true
   },
   {
     text: "Produtos",
     icon: <ShoppingCartOutlined />,
     link: "/produtos",
-    available: true // ✅ Disponível
+    available: true
   },
   {
     text: "Clientes",
     icon: <Groups2Outlined />,
     link: "/clientes",
-    available: true // ✅ Disponível
+    available: true
   },
   {
     text: "Transações",
     icon: <ReceiptLongOutlined />,
     link: "/transacoes",
-    available: true // ✅ Disponível
+    available: true
   },
   {
     text: "Geografia",
     icon: <PublicOutlined />,
     link: "/geografia",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Visão Geral",
     icon: <PointOfSaleOutlined />,
     link: "/visao-geral",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Diário",
     icon: <TodayOutlined />,
     link: "/diario",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Mensal",
     icon: <CalendarMonthOutlined />,
     link: "/mensal",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Detalhamento",
     icon: <PieChartOutlined />,
     link: "/detalhamento",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Administração",
     icon: <AdminPanelSettingsOutlined />,
     link: "/administracao",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
   {
     text: "Desempenho",
     icon: <TrendingUpOutlined />,
     link: "/desempenho",
-    available: false // 🔒 Futura ferramenta
+    available: false
   },
 ];
 
@@ -122,7 +122,6 @@ const Sidebar = ({
       navigate(link);
       setActive(link);
     }
-    // Se não estiver disponível, não faz nada (item bloqueado)
   };
 
   return (
@@ -145,27 +144,74 @@ const Sidebar = ({
           }}
         >
           <Box width="100%">
-            <Box m="1.5rem 2rem 2rem 3rem">
+            <Box m="1.5rem 1.5rem 2rem 1.5rem">
               <FlexBetween color={theme.palette.secondary.main}>
-                <Box display="flex" alignItems="center" gap="0.5rem" width="100%" justifyContent="center">
-                  {/* Logo - CENTRALIZADA */}
+                <Box 
+                  display="flex" 
+                  alignItems="center" 
+                  gap="0.75rem" 
+                  width="100%" 
+                  justifyContent="flex-start"
+                >
+                  {/* Logo + Texto */}
                   <Box
                     component="img"
                     alt="logo"
                     src="/assets/logo.png"
-                    height="40px"
+                    height="42px"
                     sx={{ 
                       objectFit: "contain"
                     }}
                   />
+                  
+                  {/* Texto DescomplicAI Moderno */}
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontWeight: 800,
+                        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                        backgroundClip: 'text',
+                        WebkitBackgroundClip: 'text',
+                        color: 'transparent',
+                        fontSize: '1.5rem',
+                        letterSpacing: '-0.5px',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      DescomplicAI
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontWeight: 900,
+                        background: `linear-gradient(45deg, ${theme.palette.accent.main}, ${theme.palette.primary.light})`,
+                        backgroundClip: 'text',
+                        WebkitBackgroundClip: 'text',
+                        color: 'transparent',
+                        fontSize: '1.5rem',
+                        letterSpacing: '-0.5px',
+                        lineHeight: 1,
+                        marginTop: '-4px',
+                      }}
+                    >
+                    </Typography>
+                  </Box>
                 </Box>
+                
                 {!isNonMobile && (
-                  <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                  <IconButton 
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    sx={{
+                      color: theme.palette.secondary[300],
+                    }}
+                  >
                     <ChevronLeft />
                   </IconButton>
                 )}
               </FlexBetween>
             </Box>
+            
             <List>
               {navItems.map(({ text, icon, link, available }) => {
                 if (!icon) {
@@ -194,14 +240,14 @@ const Sidebar = ({
                             ? active === link
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100]
-                            : theme.palette.grey[500], // ✅ Cinza para itens não disponíveis
+                            : theme.palette.grey[500],
                           '&:hover': {
                             backgroundColor: available 
                               ? theme.palette.secondary[400] 
-                              : 'transparent', // ✅ Sem hover para itens bloqueados
+                              : 'transparent',
                           },
-                          cursor: available ? 'pointer' : 'not-allowed', // ✅ Cursor diferente
-                          opacity: available ? 1 : 0.6, // ✅ Opacidade reduzida
+                          cursor: available ? 'pointer' : 'not-allowed',
+                          opacity: available ? 1 : 0.6,
                         }}
                       >
                         <ListItemIcon
@@ -211,7 +257,7 @@ const Sidebar = ({
                               ? active === link
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200]
-                              : theme.palette.grey[500], // ✅ Ícone cinza
+                              : theme.palette.grey[500],
                           }}
                         >
                           {icon}
@@ -220,7 +266,7 @@ const Sidebar = ({
                           primary={text} 
                           sx={{
                             '& .MuiTypography-root': {
-                              color: 'inherit', // ✅ Herda a cor do ListItemButton
+                              color: 'inherit',
                             }
                           }}
                         />
@@ -232,7 +278,7 @@ const Sidebar = ({
                             sx={{ 
                               ml: "auto", 
                               fontSize: "18px",
-                              color: theme.palette.grey[500] // ✅ Cadeado cinza
+                              color: theme.palette.grey[500]
                             }} 
                           />
                         )}
