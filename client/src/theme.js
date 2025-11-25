@@ -29,9 +29,9 @@ export const tokensDark = {
   },
   secondary: {
     // Tons de roxo mais suaves para contraste
-    100: "#2d1b69", // Lilás muito escuro
-    200: "#f3e8ff", // Lilás claro
-    300: "#2d1b69", // Lilás médio
+    100: "#2dbb5g", // Lilás muito escuro - ✅ TEMA CLARO
+    200: "#cc9cfc", // Lilás claro#fdfdfd - ✅ TEMA CLARO
+    300: "#2d1b69", // Lilás médio - ✅ TEMA ESCURO
     400: "#d8b4fe", // Lilás vibrante
     500: "#c084fc", // Lilás principal
     600: "#a855f7", // Lilás intenso
@@ -77,7 +77,7 @@ export const themeSettings = (mode) => {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // TEMA ESCURO: PRETO PROFUNDO COM ROXO VIBRANTE
+            // TEMA ESCURO: PRETO PROFUNDO COM AS CORES MAIS ESCURAS
             primary: {
               ...tokensDark.primary,
               main: tokensDark.primary[500], // Roxo vibrante #8b5cf6
@@ -85,7 +85,8 @@ export const themeSettings = (mode) => {
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[500], // Lilás principal #c084fc
+              main: tokensDark.secondary[300], // ✅ #2d1b69 - Roxo super escuro
+              light: tokensDark.secondary[500], // Lilás principal #c084fc
             },
             accent: {
               ...tokensDark.accent,
@@ -93,19 +94,20 @@ export const themeSettings = (mode) => {
             },
             neutral: {
               ...tokensDark.grey,
-              main: tokensDark.grey[0], // ✅ TEXTO BRANCO PURO
+              main: tokensDark.grey[100], // ✅ TEXTO LEVEMENTE CLARO
             },
             background: {
               default: tokensDark.grey[1000], // PRETO ABSOLUTO #000000
-              alt: tokensDark.grey[900],      // Preto profundo #020617
+              alt: tokensDark.secondary[300], // ✅ #2d1b69 - Roxo super escuro
             },
             text: {
-              primary: tokensDark.grey[0],    // ✅ TEXTO BRANCO PURO
-              secondary: tokensDark.grey[200], // ✅ Texto cinza claro
+              primary: tokensDark.grey[100],    // ✅ TEXTO LEVEMENTE CLARO #e2e8f0
+              secondary: tokensDark.grey[300],  // ✅ Texto cinza médio #94a3b8
+              disabled: tokensDark.grey[600],   // ✅ Texto desabilitado
             }
           }
         : {
-            // TEMA CLARO: ROXO CLARO COM TEXTO ESCURO
+            // TEMA CLARO: ROXO CLARO COM AS CORES MAIS CLARAS
             primary: {
               ...tokensDark.primary,
               main: tokensDark.primary[700], // Roxo escuro #6d28d9
@@ -113,7 +115,8 @@ export const themeSettings = (mode) => {
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[700], // Lilás escuro #9333ea
+              main: tokensDark.secondary[200], // ✅rgb(144, 40, 249) - Lilás claro
+              light: tokensDark.secondary[100], // ✅ #2d1b69 - Roxo escuro para contraste
             },
             accent: {
               ...tokensDark.accent,
@@ -121,15 +124,16 @@ export const themeSettings = (mode) => {
             },
             neutral: {
               ...tokensDark.grey,
-              main: tokensDark.grey[900],     // ✅ TEXTO PRETO
+              main: tokensDark.grey[1000],     // ✅ TEXTO PRETO ABSOLUTO
             },
             background: {
               default: tokensDark.primary[100], // Fundo roxo muito claro #f5f3ff
-              alt: tokensDark.primary[200],     // Fundo roxo clarorgb(175, 157, 255)
+              alt: tokensDark.secondary[200],   // ✅ #cc9cfc - Lilás claro
             },
             text: {
-              primary: tokensDark.grey[900],    // ✅ TEXTO PRETO PURO #020617
-              secondary: tokensDark.grey[800],  // ✅ Texto cinza muito escuro #0f172a
+              primary: tokensDark.grey[1000],   // ✅ TEXTO PRETO ABSOLUTO #000000
+              secondary: tokensDark.secondary[100], // ✅ #2d1b69 - Roxo escuro para texto secundário
+              disabled: tokensDark.grey[600],   // ✅ Texto desabilitado
             }
           }),
     },
@@ -140,46 +144,46 @@ export const themeSettings = (mode) => {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 40,
         fontWeight: 700,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       h2: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 32,
         fontWeight: 600,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       h3: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 24,
         fontWeight: 600,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       h4: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 20,
         fontWeight: 500,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       h5: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 16,
         fontWeight: 500,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       h6: {
         fontFamily: ["Inter", "sans-serif"].join(","),
         fontSize: 14,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // PRETO
+        color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
       },
       body1: {
         fontSize: 14,
         fontWeight: 400,
-        color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[800], // CINZA ESCURO
+        color: mode === 'dark' ? tokensDark.grey[200] : tokensDark.grey[900],
       },
       body2: {
         fontSize: 12,
         fontWeight: 400,
-        color: mode === 'dark' ? tokensDark.grey[200] : tokensDark.grey[700], // CINZA MÉDIO
+        color: mode === 'dark' ? tokensDark.grey[300] : tokensDark.grey[800],
       },
     },
     components: {
@@ -189,7 +193,7 @@ export const themeSettings = (mode) => {
             borderRadius: '8px',
             textTransform: 'none',
             fontWeight: 600,
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO ESCURO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
@@ -198,40 +202,40 @@ export const themeSettings = (mode) => {
           root: {
             borderRadius: '12px',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            backgroundColor: mode === 'dark' ? tokensDark.grey[900] : tokensDark.primary[50],
+            backgroundColor: mode === 'dark' ? tokensDark.secondary[300] : tokensDark.secondary[200], // ✅ CORES DIVIDIDAS
           },
         },
       },
       MuiPaper: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === 'dark' ? tokensDark.grey[900] : tokensDark.primary[50],
-          color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO ESCURO
+            backgroundColor: mode === 'dark' ? tokensDark.secondary[300] : tokensDark.secondary[200], // ✅ CORES DIVIDIDAS
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === 'dark' ? tokensDark.grey[900] : tokensDark.primary[200],
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO ESCURO
+            backgroundColor: mode === 'dark' ? tokensDark.secondary[300] : tokensDark.secondary[200], // ✅ CORES DIVIDIDAS
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
       MuiTypography: {
         styleOverrides: {
           root: {
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ FORÇA TEXTO PRETO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
       MuiListItemText: {
         styleOverrides: {
           primary: {
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
           secondary: {
-            color: mode === 'dark' ? tokensDark.grey[200] : tokensDark.grey[700], // ✅ TEXTO CINZA
+            color: mode === 'dark' ? tokensDark.grey[300] : tokensDark.secondary[100], // ✅ #2d1b69 para tema claro
           },
         },
       },
@@ -239,28 +243,28 @@ export const themeSettings = (mode) => {
         styleOverrides: {
           root: {
             borderBottom: `1px solid ${mode === 'dark' ? tokensDark.grey[800] : tokensDark.primary[200]}`,
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
           head: {
             fontWeight: 600,
-            backgroundColor: mode === 'dark' ? tokensDark.primary[800] : tokensDark.primary[100],
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+            backgroundColor: mode === 'dark' ? tokensDark.primary[800] : tokensDark.secondary[200], // ✅ #cc9cfc para tema claro
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
       MuiTablePagination: {
         styleOverrides: {
           root: {
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },
       MuiInputBase: {
         styleOverrides: {
           root: {
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO INPUTS
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
             '& .MuiInputBase-input': {
-              color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+              color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
             }
           },
         },
@@ -268,7 +272,7 @@ export const themeSettings = (mode) => {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            color: mode === 'dark' ? tokensDark.grey[0] : tokensDark.grey[900], // ✅ TEXTO PRETO
+            color: mode === 'dark' ? tokensDark.grey[100] : tokensDark.grey[1000],
           },
         },
       },

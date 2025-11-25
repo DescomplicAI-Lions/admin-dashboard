@@ -240,7 +240,7 @@ const Sidebar = ({
                             ? active === link
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100]
-                            : theme.palette.grey[500],
+                            : theme.palette.grey[100],
                           '&:hover': {
                             backgroundColor: available 
                               ? theme.palette.secondary[400] 
@@ -256,7 +256,7 @@ const Sidebar = ({
                             color: available
                               ? active === link
                                 ? theme.palette.primary[600]
-                                : theme.palette.secondary[200]
+                                : theme.palette.secondary[100]
                               : theme.palette.grey[500],
                           }}
                         >
@@ -266,7 +266,7 @@ const Sidebar = ({
                           primary={text} 
                           sx={{
                             '& .MuiTypography-root': {
-                              color: 'inherit',
+                              color: '[100]',
                             }
                           }}
                         />
@@ -278,7 +278,7 @@ const Sidebar = ({
                             sx={{ 
                               ml: "auto", 
                               fontSize: "18px",
-                              color: theme.palette.grey[500]
+                              color: theme.palette.grey[100]
                             }} 
                           />
                         )}
