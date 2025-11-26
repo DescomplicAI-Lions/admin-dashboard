@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import {
   Box,
   Card,
-  CardActions,
-  CardContent,
-  Collapse,
   Button,
   Typography,
-  Rating,
   useTheme,
   useMediaQuery,
   Modal,
@@ -15,93 +11,239 @@ import {
   MenuItem,
   Grid,
   IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
-import { Add, Close } from "@mui/icons-material";
+import { Add, Close, Edit, Delete, Warning } from "@mui/icons-material";
 import Header from "components/Header";
 import { useGetProductsQuery } from "state/api";
 
-const Product = ({
-  _id,
-  name,
-  description,
-  price,
-  rating,
-  category,
-  supply,
-  stat,
+const ProductRow = ({
+  product,
+  onEdit,
+  onDelete,
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  return (
-    <Card
-      sx={{
-        backgroundImage: "none",
-        backgroundColor: theme.palette.background.alt,
-        borderRadius: "0.55rem",
-      }}
-    >
-      <CardContent>
-        <Typography
-          sx={{ fontSize: 14 }}
-          color={theme.palette.secondary[700]}
-          gutterBottom
-        >
-          {category}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
-          R${Number(price).toFixed(2)}
-        </Typography>
-        <Rating value={rating} readOnly />
+  // Determinar cor do estoque baseado na quantidade
+  const getStockColor = (supply) => {
+    if (supply <= 10) return "error";
+    if (supply <= 20) return "warning";
+    return "success";
+  };
 
-        <Typography variant="body2">{description}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          Ver Mais
-        </Button>
-      </CardActions>
-      <Collapse
-        in={isExpanded}
-        timeout="auto"
-        unmountOnExit
+  return (
+    <>
+      <TableRow
         sx={{
-          color: theme.palette.neutral[300],
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
         }}
       >
-        <CardContent>
-          <Typography>ID: {_id}</Typography>
-          <Typography>Estoque Disponível: {supply}</Typography>
-          <Typography>
-            Vendas Anuais Este Ano: {stat?.yearlySalesTotal || 0}
+        <TableCell>
+          <Typography variant="subtitle2" fontWeight="bold">
+            {product.name}
           </Typography>
-          <Typography>
-            Unidades Vendidas Este Ano: {stat?.yearlyTotalSoldUnits || 0}
+        </TableCell>
+        <TableCell>
+          <Chip 
+            label={product.category} 
+            size="small"
+            color="primary"
+            variant="outlined"
+          />
+        </TableCell>
+        <TableCell>
+          <Typography variant="body2">
+            R${Number(product.price).toFixed(2)}
           </Typography>
-        </CardContent>
-      </Collapse>
+        </TableCell>
+        <TableCell>
+          <Chip 
+            label={product.supply}
+            size="small"
+            color={getStockColor(product.supply)}
+            variant="filled"
+          />
+        </TableCell>
+        <TableCell>
+          <Box display="flex" gap={1}>
+            <IconButton 
+              size="small" 
+              onClick={() => onEdit(product)}
+              color="primary"
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+            <IconButton 
+              size="small" 
+              onClick={() => onDelete(product._id)}
+              color="error"
+            >
+              <Delete fontSize="small" />
+            </IconButton>
+            <Button
+              size="small"
+              onClick={() => setIsExpanded(!isExpanded)}
+              variant="outlined"
+            >
+              {isExpanded ? "Menos" : "Mais"}
+            </Button>
+          </Box>
+        </TableCell>
+      </TableRow>
+      
+      {isExpanded && (
+        <TableRow>
+          <TableCell colSpan={5} sx={{ backgroundColor: theme.palette.background.default }}>
+            <Box p={2}>
+              <Typography variant="subtitle2" gutterBottom>
+                Descrição:
+              </Typography>
+              <Typography variant="body2" paragraph>
+                {product.description}
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Typography variant="body2">
+                    <strong>ID:</strong> {product._id}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">
+                    <strong>Vendas Anuais:</strong> R$ {Number(product.stat?.yearlySalesTotal || 0).toFixed(2)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">
+                    <strong>Unidades Vendidas:</strong> {product.stat?.yearlyTotalSoldUnits || 0}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">
+                    <strong>Criado em:</strong> {new Date(product.createdAt).toLocaleDateString()}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          </TableCell>
+        </TableRow>
+      )}
+    </>
+  );
+};
+
+// Componente para mostrar produtos com pouco estoque - AGORA BEM PEQUENO
+const LowStockProducts = ({ products }) => {
+  const theme = useTheme();
+
+  // Filtrar produtos com estoque baixo (≤ 20) e ordenar por estoque (menor primeiro)
+  const lowStockProducts = products
+    .filter(product => product.supply <= 20)
+    .sort((a, b) => a.supply - b.supply)
+    .slice(0, 3); // Top 3 com menor estoque
+
+  if (lowStockProducts.length === 0) {
+    return null;
+  }
+
+  return (
+    <Card sx={{ 
+      mb: 2, 
+      border: `1px solid ${theme.palette.warning.main}`,
+      maxWidth: '400px',
+      alignSelf: 'flex-start'
+    }}>
+      <Box p={1}>
+        <Box display="flex" alignItems="center" gap={1} mb={1}>
+          <Warning color="warning" fontSize="small" />
+          <Typography variant="subtitle2" fontWeight="bold" color="warning.dark">
+            Estoque Baixo
+          </Typography>
+        </Box>
+        <TableContainer>
+          <Table size="small" sx={{ minWidth: 'auto' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ 
+                  fontWeight: 'bold', 
+                  padding: '4px 8px',
+                  fontSize: '0.7rem'
+                }}>
+                  Produto
+                </TableCell>
+                <TableCell sx={{ 
+                  fontWeight: 'bold', 
+                  padding: '4px 8px',
+                  fontSize: '0.7rem'
+                }}>
+                  Estoque
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {lowStockProducts.map((product) => (
+                <TableRow 
+                  key={product._id}
+                  sx={{ 
+                    '&:last-child td, &:last-child th': { border: 0 },
+                  }}
+                >
+                  <TableCell sx={{ 
+                    padding: '4px 8px',
+                    maxWidth: '200px'
+                  }}>
+                    <Typography variant="body2" fontSize="0.75rem" noWrap>
+                      {product.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ padding: '4px 8px' }}>
+                    <Chip 
+                      label={product.supply}
+                      size="small"
+                      color={product.supply <= 10 ? "error" : "warning"}
+                      variant="filled"
+                      sx={{ 
+                        fontSize: '0.7rem', 
+                        height: '20px',
+                        minWidth: '30px'
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Card>
   );
 };
 
-// Modal de Cadastro de Produto
-const ProductForm = ({ open, onClose, onSubmit }) => {
+// Modal de Cadastro/Edição de Produto
+const ProductForm = ({ open, onClose, onSubmit, product, isEditing }) => {
   const theme = useTheme();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
     category: "",
+    newCategory: "",
     supply: "",
-    rating: 0,
   });
+  const [errors, setErrors] = useState({});
+  const [showNewCategory, setShowNewCategory] = useState(false);
 
   const categories = [
     "Eletrônicos",
@@ -114,36 +256,149 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
     "Outros"
   ];
 
+  // Reset form quando abrir/fechar modal
+  React.useEffect(() => {
+    if (open) {
+      if (isEditing && product) {
+        // Preencher com dados do produto para edição
+        setFormData({
+          name: product.name || "",
+          description: product.description || "",
+          price: product.price || "",
+          category: product.category || "",
+          newCategory: "",
+          supply: product.supply || "",
+        });
+        setShowNewCategory(false);
+      } else {
+        // Limpar form para novo produto
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          category: "",
+          newCategory: "",
+          supply: "",
+        });
+        setShowNewCategory(false);
+      }
+      setErrors({});
+    }
+  }, [open, isEditing, product]);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Nome do produto é obrigatório";
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = "Descrição é obrigatória";
+    }
+
+    if (!formData.price || formData.price <= 0) {
+      newErrors.price = "Preço deve ser maior que zero";
+    } else if (formData.price.toString().length > 5) {
+      newErrors.price = "Preço deve ter no máximo 5 dígitos";
+    }
+
+    if (!formData.supply || formData.supply < 0) {
+      newErrors.supply = "Estoque não pode ser negativo";
+    } else if (formData.supply.toString().length > 5) {
+      newErrors.supply = "Estoque deve ter no máximo 5 dígitos";
+    }
+
+    if (!formData.category && !formData.newCategory) {
+      newErrors.category = "Categoria é obrigatória";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Limitar para 5 dígitos nos campos numéricos
+    if ((name === 'price' || name === 'supply') && value.length > 5) {
+      return;
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Limpar erro do campo quando usuário começar a digitar
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: "",
+      });
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    if (value === "new") {
+      setShowNewCategory(true);
+      setFormData({
+        ...formData,
+        category: "",
+        newCategory: "",
+      });
+    } else {
+      setShowNewCategory(false);
+      setFormData({
+        ...formData,
+        category: value,
+        newCategory: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    setFormData({
-      name: "",
-      description: "",
-      price: "",
-      category: "",
-      supply: "",
-      rating: 0,
-    });
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    const finalCategory = showNewCategory ? formData.newCategory : formData.category;
+
+    const submitData = {
+      ...formData,
+      category: finalCategory,
+      price: Number(formData.price),
+      supply: Number(formData.supply),
+    };
+
+    // Manter o rating existente se estiver editando (para compatibilidade com a API)
+    if (isEditing && product) {
+      submitData.rating = product.rating || 0;
+    }
+
+    onSubmit(submitData);
+    onClose();
+  };
+
+  const handleClose = () => {
     onClose();
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 400,
+          width: 500,
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+          overflow: 'auto',
           bgcolor: theme.palette.background.default,
           boxShadow: 24,
           p: 4,
@@ -152,9 +407,9 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Typography variant="h5" fontWeight="bold">
-            Cadastrar Novo Produto
+            {isEditing ? "Editar Produto" : "Cadastrar Novo Produto"}
           </Typography>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={handleClose}>
             <Close />
           </IconButton>
         </Box>
@@ -168,9 +423,12 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
                 required
               />
             </Grid>
+            
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -178,11 +436,14 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
+                error={!!errors.description}
+                helperText={errors.description}
                 multiline
                 rows={3}
                 required
               />
             </Grid>
+            
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -191,9 +452,17 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
                 type="number"
                 value={formData.price}
                 onChange={handleChange}
+                error={!!errors.price}
+                helperText={errors.price}
+                inputProps={{ 
+                  min: "0", 
+                  max: "99999",
+                  step: "0.01"
+                }}
                 required
               />
             </Grid>
+            
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -202,17 +471,26 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
                 type="number"
                 value={formData.supply}
                 onChange={handleChange}
+                error={!!errors.supply}
+                helperText={errors.supply}
+                inputProps={{ 
+                  min: "0", 
+                  max: "99999"
+                }}
                 required
               />
             </Grid>
+            
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 select
                 label="Categoria"
                 name="category"
-                value={formData.category}
-                onChange={handleChange}
+                value={showNewCategory ? "new" : formData.category}
+                onChange={handleCategoryChange}
+                error={!!errors.category}
+                helperText={errors.category}
                 required
               >
                 {categories.map((category) => (
@@ -220,28 +498,32 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
                     {category}
                   </MenuItem>
                 ))}
+                <MenuItem value="new">
+                  <em>+ Adicionar nova categoria</em>
+                </MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={12}>
-              <Typography component="legend">Avaliação</Typography>
-              <Rating
-                name="rating"
-                value={Number(formData.rating)}
-                onChange={(event, newValue) => {
-                  setFormData({
-                    ...formData,
-                    rating: newValue,
-                  });
-                }}
-              />
-            </Grid>
+
+            {showNewCategory && (
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Nova Categoria"
+                  name="newCategory"
+                  value={formData.newCategory}
+                  onChange={handleChange}
+                  error={!!errors.category}
+                  helperText="Digite o nome da nova categoria"
+                />
+              </Grid>
+            )}
           </Grid>
 
           <Box mt={3} display="flex" gap={2}>
             <Button
               fullWidth
               variant="outlined"
-              onClick={onClose}
+              onClick={handleClose}
             >
               Cancelar
             </Button>
@@ -250,7 +532,7 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
               variant="contained"
               type="submit"
             >
-              Cadastrar
+              {isEditing ? "Atualizar" : "Cadastrar"}
             </Button>
           </Box>
         </form>
@@ -260,19 +542,19 @@ const ProductForm = ({ open, onClose, onSubmit }) => {
 };
 
 const Products = () => {
-  const { data, isLoading, error } = useGetProductsQuery();
+  const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [products, setProducts] = useState([]);
-  const theme = useTheme(); // ✅ CORREÇÃO: Adicionei esta linha
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const theme = useTheme();
 
-  // Função para adicionar novo produto (simulação)
   const handleAddProduct = (newProduct) => {
     const product = {
       _id: Math.random().toString(36).substr(2, 9),
       ...newProduct,
-      price: Number(newProduct.price),
-      supply: Number(newProduct.supply),
+      rating: 0, // Rating sempre começa em 0 (será definido pelos clientes)
       stat: {
         yearlySalesTotal: 0,
         yearlyTotalSoldUnits: 0,
@@ -282,8 +564,57 @@ const Products = () => {
     setProducts([product, ...products]);
   };
 
+  const handleEditProduct = (updatedProduct) => {
+    if (editingProduct) {
+      // Se é um produto local
+      if (products.find(p => p._id === editingProduct._id)) {
+        setProducts(products.map(p => 
+          p._id === editingProduct._id 
+            ? { ...p, ...updatedProduct }
+            : p
+        ));
+      }
+    }
+  };
+
+  const handleDeleteProduct = (productId) => {
+    if (window.confirm("Tem certeza que deseja excluir este produto?")) {
+      // Se é um produto local
+      if (products.find(p => p._id === productId)) {
+        setProducts(products.filter(p => p._id !== productId));
+      }
+    }
+  };
+
+  const openEditForm = (product) => {
+    setEditingProduct(product);
+    setIsFormOpen(true);
+  };
+
+  const handleFormSubmit = (formData) => {
+    if (editingProduct) {
+      handleEditProduct(formData);
+      setEditingProduct(null);
+    } else {
+      handleAddProduct(formData);
+    }
+  };
+
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    setEditingProduct(null);
+  };
+
   // Combina produtos da API com produtos locais
   const allProducts = [...(data || []), ...products];
+
+  // Obter categorias únicas para o filtro
+  const categories = [...new Set(allProducts.map(product => product.category))].sort();
+
+  // Filtrar produtos por categoria
+  const filteredProducts = selectedCategory === "all" 
+    ? allProducts 
+    : allProducts.filter(product => product.category === selectedCategory);
 
   if (isLoading) {
     return (
@@ -296,82 +627,102 @@ const Products = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="PRODUTOS" subtitle="Veja sua lista de produtos." />
+      <Header title="PRODUTOS" subtitle="Gerencie sua lista de produtos." />
       
-      {/* Botão de Adicionar Produto */}
-      <Box display="flex" justifyContent="flex-end" mb={3}>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => setIsFormOpen(true)}
-          sx={{
-            backgroundColor: theme.palette.secondary.main, // ✅ Agora theme está definido
-            '&:hover': {
-              backgroundColor: theme.palette.secondary.dark, // ✅ Agora theme está definido
-            },
-          }}
-        >
-          Adicionar Produto
-        </Button>
+      {/* Layout com tabela de estoque baixo à direita */}
+      <Box display="flex" gap={3} alignItems="flex-start">
+        {/* Conteúdo principal */}
+        <Box flex={1}>
+          {/* Filtros e Botão de Adicionar */}
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} gap={2} mt={2}>
+            <FormControl sx={{ minWidth: 200 }}>
+              <InputLabel id="category-filter-label">Filtrar por Categoria</InputLabel>
+              <Select
+                labelId="category-filter-label"
+                value={selectedCategory}
+                label="Filtrar por Categoria"
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <MenuItem value="all">Todas as Categorias</MenuItem>
+                {categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => setIsFormOpen(true)}
+              sx={{
+                backgroundColor: theme.palette.secondary.main,
+                '&:hover': {
+                  backgroundColor: theme.palette.secondary.dark,
+                },
+              }}
+            >
+              Adicionar Produto
+            </Button>
+          </Box>
+
+          {/* Lista de Produtos em Tabela */}
+          <Card>
+            <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell><strong>Nome</strong></TableCell>
+                    <TableCell><strong>Categoria</strong></TableCell>
+                    <TableCell><strong>Preço</strong></TableCell>
+                    <TableCell><strong>Estoque</strong></TableCell>
+                    <TableCell><strong>Ações</strong></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredProducts.map((product) => (
+                    <ProductRow
+                      key={product._id}
+                      product={product}
+                      onEdit={openEditForm}
+                      onDelete={handleDeleteProduct}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+
+          {/* Mensagem quando não há produtos */}
+          {filteredProducts.length === 0 && !isLoading && (
+            <Box textAlign="center" mt={4} p={4}>
+              <Typography variant="h6" color="textSecondary" gutterBottom>
+                {selectedCategory === "all" 
+                  ? "Nenhum produto cadastrado" 
+                  : `Nenhum produto na categoria "${selectedCategory}"`}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {selectedCategory === "all" 
+                  ? 'Clique em "Adicionar Produto" para começar.' 
+                  : 'Tente selecionar outra categoria ou adicionar um novo produto.'}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+
+        {/* Tabela de Produtos com Baixo Estoque - AGORA NA DIREITA */}
+        <LowStockProducts products={allProducts} />
       </Box>
 
-      {/* Lista de Produtos */}
-      <Box
-        mt="20px"
-        display="grid"
-        gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-        justifyContent="space-between"
-        rowGap="20px"
-        columnGap="1.33%"
-        sx={{
-          "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-        }}
-      >
-        {allProducts.map((product) => (
-          <Product
-            key={product._id}
-            _id={product._id}
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            rating={product.rating}
-            category={product.category}
-            supply={product.supply}
-            stat={product.stat || {}}
-          />
-        ))}
-      </Box>
-
-      {/* Modal de Cadastro */}
+      {/* Modal de Cadastro/Edição */}
       <ProductForm
         open={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleAddProduct}
+        onClose={handleFormClose}
+        onSubmit={handleFormSubmit}
+        product={editingProduct}
+        isEditing={!!editingProduct}
       />
-
-      {/* Mensagem de erro */}
-      {error && (
-        <Box mt={2}>
-          <Typography color="error">
-            Erro ao carregar produtos da API: {error.message}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Você ainda pode cadastrar novos produtos localmente.
-          </Typography>
-        </Box>
-      )}
-
-      {/* Mensagem quando não há produtos */}
-      {allProducts.length === 0 && !isLoading && (
-        <Box textAlign="center" mt={4}>
-          <Typography variant="h6" color="textSecondary">
-            Nenhum produto cadastrado
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Clique em "Adicionar Produto" para começar.
-          </Typography>
-        </Box>
-      )}
     </Box>
   );
 };
