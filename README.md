@@ -2,6 +2,10 @@
 
 Dashboard administrativo completo com React, TypeScript e Material-UI
 
+## Url Vercel: 
+
+*  https://admin-dashboard-three-phi-50.vercel.app/
+
 ## ✨ Funcionalidades Implementadas
 
 - ✅ **Interface responsiva** com Material-UI
