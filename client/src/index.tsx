@@ -7,6 +7,7 @@ import globalReducer from "./state";  // ✅ Adicione ./
 import { Provider } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { api } from "./state/api";    // ✅ Adicione ./
+import { AuthProvider } from "./auth/AuthProvider";
 
 const store = configureStore({
   reducer: {
@@ -26,7 +27,9 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Provider>
   </React.StrictMode>
 );
