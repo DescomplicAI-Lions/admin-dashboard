@@ -20,11 +20,13 @@ import {
   Logout, // ✅ Adicione o ícone de logout
 } from "@mui/icons-material";
 import { setMode, setLogout } from "../state"; // ✅ Importe setLogout
+import { useAuth } from "auth/useAuth";
 
 const Navbar = () => {
+  const { logout: authLogout } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.global.user);
+  const { user } = useAuth();
   const theme = useTheme();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -40,22 +42,16 @@ const Navbar = () => {
 
   // ✅ FUNÇÃO DE LOGOUT CORRIGIDA
   const handleLogout = () => {
-    // 1. Dispara a action de logout
+    authLogout();
+
+    // 2. Limpa redux (se você ainda usa user lá)
     dispatch(setLogout());
-    
-    // 2. Limpa o localStorage completamente
-    localStorage.clear();
-    
-    // 3. Fecha o menu
+
+    // 3. Fecha menu
     handleClose();
-    
-    // 4. Redireciona para a página inicial
-    navigate("/");
-    
-    // 5. Recarrega para limpar estado residual
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+
+    // 4. Redireciona para login
+    navigate("/login", { replace: true });
   };
 
   const handleLogin = () => {
@@ -114,14 +110,15 @@ const Navbar = () => {
           }}
         >
           {user ? (
-            [
-              <MenuItem key="profile" onClick={handleClose}>
+            <>
+              <MenuItem onClick={handleClose}>
                 <Typography>👤 {user.name || "Usuário"}</Typography>
-              </MenuItem>,
-              <MenuItem key="logout" onClick={handleLogout}>
+              </MenuItem>
+
+              <MenuItem onClick={handleLogout}>
                 <Typography color="error">🚪 Sair</Typography>
               </MenuItem>
-            ]
+            </>
           ) : (
             <MenuItem onClick={handleLogin}>
               <Typography>🔐 Fazer Login</Typography>
