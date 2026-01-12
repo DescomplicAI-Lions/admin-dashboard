@@ -219,13 +219,16 @@ function RegisterForm() {
       return;
     }
 
+    const cpfDigits = formData.cpf.replace(/\D/g, "");
+      if (cpfDigits.length !== 11) newErrors.cpf = "CPF deve ter 11 dígitos";
+
     try {
       await register({
         nome: formData.nome,
         email: formData.email,
         senha: formData.senha,
         dataNascimentoBr: formData.dataNascimento,
-        cpf: formData.cpf,
+        cpf: cpfDigits,
         role: "client",
       });
 

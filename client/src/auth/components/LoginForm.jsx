@@ -53,7 +53,7 @@ function Login() {
 
     try {
       await login(email, password);
-      navigate("/");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error("Erro no login:", err);
     }

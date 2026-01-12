@@ -46,8 +46,9 @@ export function AuthProvider({ children }) {
     setAuthError(null);
     try {
       const res = await loginWithPassword({ email, password });
-      saveAuthState(res);
-      return res;
+      const auth = res && res.data ? res.data : res;
+      saveAuthState(auth);
+      return auth;
     } catch (err) {
       setAuthError(err.message || "Erro ao fazer login.");
       throw err;

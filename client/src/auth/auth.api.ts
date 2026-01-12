@@ -70,12 +70,14 @@ export async function registerUser(input: {
 }): Promise<AuthUser> {
   const { nome, email, senha, dataNascimentoBr, cpf, role } = input;
 
+  const cpfDigits = (cpf || "").replace(/\D/g, "");
+
   const payload = {
     nome,
-    senha,
     email,
+    senha,
     data_nascimento: brDateToISO(dataNascimentoBr),
-    cpf,
+    cpf_usuario: cpfDigits,
   };
 
   return request<AuthUser>(`/auth/register/${role}`, {
