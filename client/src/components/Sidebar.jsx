@@ -43,19 +43,19 @@ const navItems = [
     text: "Produtos",
     icon: <ShoppingCartOutlined />,
     link: "/produtos",
-    available: true
+    available: false
   },
   {
     text: "Clientes",
     icon: <Groups2Outlined />,
     link: "/clientes",
-    available: true
+    available: false
   },
   {
     text: "Transações",
     icon: <ReceiptLongOutlined />,
     link: "/transacoes",
-    available: true
+    available: false
   },
   {
     text: "Geografia",
