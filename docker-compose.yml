@@ -1,0 +1,40 @@
+services:
+  # BANCO DE DADOS
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dashboard_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Este script abaixo cria as tabelas automaticamente ao subir o container
+      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # BACKEND (NODE + TSX)
+  server:
+    build: ./server
+    container_name: node_server
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/dashboard_db
+    depends_on:
+      - db
+
+  # FRONTEND (REACT)
+  client:
+    build: ./client
+    container_name: react_client
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
