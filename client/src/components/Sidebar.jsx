@@ -36,7 +36,7 @@ import FlexBetween from "./FlexBetween";
 
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, link: "/dashboard", available: true },
-  { text: "Produtos", icon: <ShoppingCartOutlined />, link: "/produtos", available: true },
+  { text: "Produtos", icon: <ShoppingCartOutlined />, link: "/produtos", available: false },
   { text: "Clientes", icon: <Groups2Outlined />, link: "/clientes", available: false },
   { text: "Transações", icon: <ReceiptLongOutlined />, link: "/transacoes", available: false },
   { text: "Geografia", icon: <PublicOutlined />, link: "/geografia", available: false },
