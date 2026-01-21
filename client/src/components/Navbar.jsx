@@ -38,14 +38,13 @@ const Navbar = () => {
   const handleProfileClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  // --- LOGOUT QUE MANDA PARA A LANDING PAGE ---
   const handleLogout = () => {
     dispatch(setLogout());
     localStorage.clear();
     handleClose();
-    navigate("/");
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+    // Redireciona para a porta da Landing Page
+    window.location.href = "http://localhost:5173";
   };
 
   return (
@@ -54,9 +53,7 @@ const Navbar = () => {
       justifyContent="space-between" 
       alignItems="center" 
       p="1rem 2rem"
-      sx={{
-        backgroundColor: "transparent",
-      }}
+      sx={{ backgroundColor: "transparent" }}
     >
       {/* LADO ESQUERDO: BARRA DE BUSCA */}
       <FlexBetween
@@ -98,7 +95,7 @@ const Navbar = () => {
 
         <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
 
-        {/* BOTÃO DE PERFIL COM AVATAR */}
+        {/* BOTÃO DE PERFIL COM AVATAR DINÂMICO */}
         <IconButton 
           onClick={handleProfileClick}
           sx={{ 
@@ -108,6 +105,7 @@ const Navbar = () => {
           }}
         >
           <Avatar 
+            src={user?.avatar || ""} // Se tiver foto no Google, ela aparece aqui
             sx={{ 
               width: 32, 
               height: 32, 
@@ -116,7 +114,7 @@ const Navbar = () => {
               fontWeight: "bold"
             }}
           >
-            {user?.name?.charAt(0) || "A"}
+            {user?.name?.charAt(0) || "U"}
           </Avatar>
         </IconButton>
 
@@ -145,7 +143,7 @@ const Navbar = () => {
                   {user.name || "Usuário"}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {user.email || "admin@descomplicai.com"}
+                  {user.email}
                 </Typography>
               </Box>
               <Divider sx={{ my: 0.5 }} />
@@ -153,18 +151,13 @@ const Navbar = () => {
                 <ListItemIcon><PersonOutlined fontSize="small" /></ListItemIcon>
                 Meu Perfil
               </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon><AdminPanelSettings fontSize="small" /></ListItemIcon>
-                Configurações
-              </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
               <MenuItem onClick={handleLogout} sx={{ color: theme.palette.error.main }}>
                 <ListItemIcon><Logout fontSize="small" color="error" /></ListItemIcon>
                 Sair
               </MenuItem>
             </Box>
           ) : (
-            <MenuItem onClick={() => navigate("/login")}>
+            <MenuItem onClick={() => (window.location.href = "http://localhost:5173/login")}>
               <ListItemIcon><PersonOutlined fontSize="small" /></ListItemIcon>
               Fazer Login
             </MenuItem>
