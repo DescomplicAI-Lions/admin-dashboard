@@ -12,7 +12,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Este script abaixo cria as tabelas automaticamente ao subir o container
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # BACKEND (NODE + TSX)
@@ -26,7 +25,7 @@ services:
     depends_on:
       - db
 
-  # FRONTEND (REACT)
+  # FRONTEND (REACT DASHBOARD)
   client:
     build: ./client
     container_name: react_client
@@ -35,6 +34,18 @@ services:
     stdin_open: true
     depends_on:
       - server
+
+  # ✅ LANDING PAGE (VITE)
+  landing_page:
+    build:
+      context: ../LandingPage
+    container_name: vite_landing
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../LandingPage:/app
+      - /app/node_modules
+    stdin_open: true
 
 volumes:
   postgres_data:
