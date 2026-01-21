@@ -73,7 +73,6 @@ const Dashboard = () => {
 
   const COLORS = [theme.palette.primary.main, theme.palette.secondary.main, "#00C49F", "#FFBB28"];
 
-  // Definição das colunas atualizada para o UserService
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { 
@@ -114,7 +113,13 @@ const Dashboard = () => {
 
   const metrics = data?.metrics || {};
   const chartData = data?.chartData || [];
-  const pieData = data?.pieData || [];
+  
+  // CORREÇÃO AQUI: Convertendo os valores de String para Number para o PieChart funcionar
+  const pieData = (data?.pieData || []).map(item => ({
+    name: item.name,
+    value: Number(item.value)
+  }));
+
   const transactions = data?.transactions || [];
 
   return (
@@ -190,12 +195,19 @@ const Dashboard = () => {
             <Box height="300px">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                    {pieData.map((_, index) => (
+                  <Pie 
+                    data={pieData} 
+                    innerRadius={60} 
+                    outerRadius={80} 
+                    paddingAngle={5} 
+                    dataKey="value"
+                    nameKey="name"
+                  >
+                    {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip formatter={(value) => `${value} Usuários`} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
