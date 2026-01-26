@@ -3,13 +3,15 @@ services:
   db:
     image: postgres:15-alpine
     container_name: postgres_db
+    env_file:
+      - .env
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dashboard_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -18,10 +20,13 @@ services:
   server:
     build: ./server
     container_name: node_server
+    env_file:
+      - .env
     ports:
-      - "5000:5000"
+      - "${BK_PORT}:${BK_PORT}"
     environment:
-      DATABASE_URL: postgresql://user:password@db:5432/dashboard_db
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+
     depends_on:
       - db
 
@@ -29,8 +34,10 @@ services:
   client:
     build: ./client
     container_name: react_client
+    env_file:
+      - .env
     ports:
-      - "3000:3000"
+      - "${FT_PORT}:${FT_PORT}"
     stdin_open: true
     depends_on:
       - server
@@ -40,8 +47,10 @@ services:
     build:
       context: ../LandingPage
     container_name: vite_landing
+    env_file:
+      - .env
     ports:
-      - "5173:5173"
+      - "${LP_PORT}:${LP_PORT}"
     volumes:
       - ../LandingPage:/app
       - /app/node_modules
