@@ -11,10 +11,24 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${DB_PORT}:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+   bridge:
+    build: ./backend # Point to your backend folder
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DATABASE_URL: postgresql://user_local:password_local@db:5432/my_local_db
+    depends_on:
+      - db
+
+  firebase:
+    image: andreysenov/firebase-tools
+    ports:
+      - "127.0.0.1:9099:9099"
+    command: firebase emulators:start --project descomplicai-3e611 --only auth
 
   # BACKEND (NODE + TSX)
   server:
@@ -26,6 +40,7 @@ services:
       - "${BK_PORT}:${BK_PORT}"
     environment:
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      DB_HOST: db 
 
     depends_on:
       - db

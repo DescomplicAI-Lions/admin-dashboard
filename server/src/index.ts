@@ -15,6 +15,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
+
 // Rota integrada para o Dashboard
 app.get('/api/dashboard', async (req: Request, res: Response) => {
   try {
