@@ -11,10 +11,31 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${DB_PORT}:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  user_service:
+    build: 
+      context: ../UserService
+    container_name: user_service
+    env_file:
+      - .env
+    ports:
+      - "2000:2000"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres_db:5432/${DB_NAME}?sslmode=disable
+      - PORT=2000
+      - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
 
   # BACKEND (NODE + TSX)
   server:
@@ -25,7 +46,8 @@ services:
     ports:
       - "${BK_PORT}:${BK_PORT}"
     environment:
-      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      # DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      DB_HOST: db 
 
     depends_on:
       - db
